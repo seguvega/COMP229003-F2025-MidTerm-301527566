@@ -3,7 +3,7 @@ let BookModel = require('../models/books');
 module.exports.getBook = async function (req, res, next) {
   try {
     // Find one using the id sent in the parameter of the request
-    let book = await BookModel.findOne({ _id: req.params.bookId });
+    let book = await BookModel.findOne({_id: req.params.id });
 
     res.json(book);
 
@@ -20,7 +20,7 @@ module.exports.create = async function (req, res, next) {
 
     // Insert into the DB
     let result = await BookModel.create(book);
-    console.log("Result: ", result);
+    //console.log("Result: ", result);
 
     // Send a response
     res.status(200);
@@ -57,9 +57,9 @@ module.exports.update = async function (req, res, next) {
     // Get input from the request
     let updatedBook = BookModel(req.body);
     updatedBook._id = req.params.bookId;
-
+    console.log(updatedBook.id);
     // Submit the change
-    let result = await BookModel.updateOne({ _id: req.params.bookId });
+    let result = await BookModel.updateOne({ _id: req.params.bookId }, {$set: updatedBook});
     console.log("Result: ", result);
 
     // Handle the result: send a response.
